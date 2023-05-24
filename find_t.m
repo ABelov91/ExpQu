@@ -1,30 +1,23 @@
-function res = find_t(DIG, dN, d2N, d4N)
-digits(DIG);
+function res = find_t(dN, d2N, d4N, DIGITS)
 %--------------------------------------------------------------------------
-flag = 4;
+digits(DIGITS);
 %--------------------------------------------------------------------------
-switch flag
-    case 1
-        t_prev = vpa(root1(DIG, dN, d2N, d4N));
-    case 2
-        t_prev = vpa(root2(DIG, dN, d2N, d4N));
-    case 3
-        t_prev = vpa(root3(DIG, dN, d2N, d4N));
-    case 4
-        t_prev = 1;%vpa(root4(DIG, dN, d2N, d4N));
-end
+t_prev_1 = vpa(root1(DIGITS, dN, d2N, d4N));
+t_prev_2 = vpa(root2(DIGITS, dN, d2N, d4N));
+t_prev_3 = vpa(root3(DIGITS, dN, d2N, d4N));
+t_prev_4 = vpa(root4(DIGITS, dN, d2N, d4N));
 %--------------------------------------------------------------------------
-N = 10;
-for k = 1 : 1 : N
-    e = vpa(E(DIG, t_prev, dN, d2N, d4N));
-    e_d = vpa(E_d(DIG, t_prev, dN, d2N, d4N));
-    tmp = abs(e / e_d)
-    t_next = vpa(t_prev - e / e_d);
-    t_prev = vpa(t_next);
-end
+t_prev_vec = vpa([vpa(t_prev_1), vpa(t_prev_2), vpa(t_prev_3),...
+    vpa(t_prev_4)]);
+E_d_vec = vpa(E_d(t_prev_vec, dN, d2N, d4N, DIGITS));
+E_d_vec_norm = vpa(vpa(E_d_vec).*conj(vpa(E_d_vec)));
+%--------------------------------------------------------------------------
+[~, flag] = min(vpa(E_d_vec_norm));
+%--------------------------------------------------------------------------
+t_prev = vpa(t_prev_vec(1, flag));
 %--------------------------------------------------------------------------
 res = vpa(t_prev);
+disp(flag);
 %--------------------------------------------------------------------------
-disp(vpa(E(DIG, t_prev, dN, d2N, d4N)));
 end
 

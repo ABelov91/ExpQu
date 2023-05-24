@@ -1,14 +1,18 @@
-function res = extrap2(DIG, dN, d2N, d4N, N, a)
-digits(DIG);
-t = vpa(find_t(DIG, dN, d2N, d4N));
+function res = extrap2(dN, d2N, d4N, DIGITS)
 %--------------------------------------------------------------------------
-disp(vpa(N))
-disp(vpa(1 / (1 - (a)^N) - t));
+digits(DIGITS);
 %--------------------------------------------------------------------------
-A = vpa((2*t-1)^(2)/(t*(t-1))*(-2*dN*t^(2)/(2*t-1)^(2)+d2N*t/(t-1)));
-BN = vpa((2*t-1)^(2)/(t*(t-1))*(dN/(2*t-1)-d2N/(t-1)));
+t = vpa(find_t(vpa(dN), vpa(d2N), vpa(d4N), DIGITS));
 %--------------------------------------------------------------------------
-res = vpa((-1) * (t - 1)^8 / (t^8 - (t - 1)^8) *...
-    (A + BN * 8 * t^8 / (t^8 - (t - 1)^8)));
+A = vpa((vpa(2)*vpa(t)-vpa(1))^vpa(2)/(vpa(t)*(vpa(t)-vpa(1)))*...
+    (-vpa(2)*vpa(dN)*vpa(t)^vpa(2)/(vpa(2)*vpa(t)-vpa(1))^vpa(2)+...
+    vpa(d2N)*vpa(t)/(vpa(t)-vpa(1))));
+BN = vpa((vpa(2)*vpa(t)-vpa(1))^vpa(2)/(vpa(t)*(vpa(t)-vpa(1)))*...
+    (vpa(dN)/(vpa(2)*vpa(t)-vpa(1))-vpa(d2N)/(vpa(t)-vpa(1))));
+%--------------------------------------------------------------------------
+res = vpa((-vpa(1))*(vpa(t)-vpa(1))^vpa(8)/(vpa(t)^vpa(8)-(vpa(t)-...
+    vpa(1))^vpa(8))*(vpa(A)+vpa(BN)*vpa(8)*vpa(t)^vpa(8)/...
+    (vpa(t)^vpa(8)-(vpa(t)-vpa(1))^vpa(8))));
+%--------------------------------------------------------------------------
 end
 
